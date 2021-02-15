@@ -14,3 +14,33 @@ independent set of installed Python packages in its site directories.
 ```shell
 python3 -m venv venv_name
 ```
+
+
+# requiremets
+
++ flask
++ ansible
++ ansible_runner
++ python-dotenv
++ flask-wtf
+
+```python
+pip install flask
+pip install ansible
+pip install ansible_runner
+pip install python-dotenv
+pip install flask-wtf
+```
+
+# flask
+
++ debug mode
+```shell
+export FLASK_DEBUG=1
+```
+
+### files
+
++ __init__.py
+
++ routes.py

@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;500&display=swap');
+
+#playbook {
+  /* font-size: 20px; */
+  border: 2px solid grey;
+  /* width: 450px; */
+  font-family: 'Source Code Pro', monospace;
+  border-left: 12px solid green;
+  border-radius: 5px;
+  padding: 14px;
+
+  /* Fixed line height */
+  line-height: 24px;
+
+  /* Use linear-gradient for background image */
+  background-image: linear-gradient(180deg, #eee 50%, #fff 50%);
+
+  /* Size background so that the height is 2x line-height */
+  background-size: 100% 48px;
+
+  /* Offset the background along the y-axis by top padding */
+  background-position: 0 14px;
+}

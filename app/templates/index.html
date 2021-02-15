@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<h1>
+  {% if results %}
+    Hi, john Doe!
+  {% endif %}
+</h1>
+
+
+
+  {% if playbook_on_start and runner_on_start and runner_on_ok and playbook_on_stats %}
+
+    <h3>playbook_on_start</h3>
+    <pre>{{ playbook_on_start }}</pre>
+
+    <h3>runner_on_start</h3>
+    <pre>{{ runner_on_start }}</pre>
+
+    <h3>runner_on_ok</h3>
+    <pre>{{ runner_on_ok }}</pre>
+
+    <h3>playbook_on_stats</h3>
+    <pre>{{ playbook_on_stats }}</pre>
+
+
+
+  {% endif %}
+
+
+
+{% endblock %}
