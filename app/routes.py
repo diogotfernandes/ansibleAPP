@@ -12,12 +12,6 @@ from app.fun import _mkdocs
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/background_process_test')
-def background_process_test():
-    a = ad_hoc()
-    print(a["status"])
-    return a
-
 
 @app.route('/ansible')
 def ansible():

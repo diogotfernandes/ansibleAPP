@@ -5,28 +5,7 @@
 
 <h1>Ansible</h1>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-        $(function() {
-          $('a#test').on('click', function(e) {
-            e.preventDefault()
-            $.getJSON('/background_process_test',
-            function(data) {
-              success:
-              alert(data.status);
-              $('#res').text(JSON.stringify(data.events, null, 2));
-            });
-            return false;
-          });
-        });
-</script>
-
 <div class='container border'>
-        <form>
-            <a href='#' id=test><button class='btn btn-default'>whoamiAJAX</button></a>
-            <br><br>
-            <pre id="res"></pre>
-        </form>
 
         <br>
 
