@@ -1,0 +1,8 @@
+[kvm_group]
+kvm ansible_host=127.0.0.1
+
+[kvm_group:vars]
+#ansible_ssh_port=2849
+ansible_sudo_pass=qwerty
+ansible_user=diogo
+ansible_python_interpreter=/usr/bin/python3

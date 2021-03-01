@@ -1,0 +1,11 @@
+- hosts: web
+  become: true
+
+  roles:
+   - apache2
+
+  vars_files:
+    - vars/apache2.yml
+    - vars/mariadb.yml
+    - vars/wordpress.yml
+    - vars/php.yml

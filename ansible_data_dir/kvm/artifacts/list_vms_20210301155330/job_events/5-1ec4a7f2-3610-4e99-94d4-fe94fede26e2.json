@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "1ec4a7f2-3610-4e99-94d4-fe94fede26e2", "counter": 5, "stdout": "\u001b[0;35m be disabled by setting deprecation_warnings=False in ansible.cfg.\u001b[0m", "start_line": 4, "end_line": 5, "runner_ident": "list_vms_20210301155330"}

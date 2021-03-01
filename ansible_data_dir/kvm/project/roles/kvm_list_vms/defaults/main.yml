@@ -1,0 +1,3 @@
+---
+# defaults file for kvm_list_vms
+kvm_uri: qemu:///system

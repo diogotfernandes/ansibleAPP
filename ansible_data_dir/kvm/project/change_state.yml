@@ -1,0 +1,4 @@
+---
+- hosts: kvm
+  roles:
+    - kvm_change_vm

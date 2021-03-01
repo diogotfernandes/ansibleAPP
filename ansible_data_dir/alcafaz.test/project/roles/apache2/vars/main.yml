@@ -1,0 +1,9 @@
+---
+# vars file for apache2
+apache2_create_vhost: True
+apache2_vhost:
+  - name: alcafaz.test
+    server_name: www.alcafaz.test
+    conf_name: alcafaz.test.conf
+    port: 80
+    index_page: index.html

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+
+
+{% if results %}
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">KVM Virtual Machines</div>
+  <!-- Table -->
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th class="text-center">Name</th>
+      <th class="text-center">action</th>
+      <th class="text-center">State</th>
+      <th class="text-center">autostart</th>
+      <th class="text-center">nrVirtCpu</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for value in results['vms'] %}
+      <tr class="{% if value.state == 'shutdown' %}danger{% elif value.state == 'paused' %}warning{%else%}success{%endif%}">
+        <td class="text-center"><strong>{{ value.name }}</strong></td>
+        <td class="text-center" style="width: 15%;">
+          <form action="/change_vm" method="post">
+            <button type="submit" name="state" value="{% if value.state == 'shutdown' %}start_{% elif value.state == 'paused' %}unpause_{% endif %}{{ value.name }}" class="btn btn-default" aria-label="Left Align" {% if value.state == 'running' %}disabled="disabled"{% endif %}>
+              <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            </button>
+            <button type="submit" name="state" value="pause_{{ value.name }}" class="btn btn-default" aria-label="Left Align" {% if value.state == 'paused' or value.state == 'shutdown' %}disabled="disabled"{% endif %} >
+              <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            </button>
+            <button type="submit" name="state" value="shutdown_{{ value.name }}" class="btn btn-default" aria-label="Left Align" {% if value.state == 'shutdown' or value.state =='paused' %}disabled="disabled"{% endif %}>
+              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </button>
+          </form>
+      </td>
+        <td class="text-center">{{ value.state }}</td>
+        <td class="text-center">{{ value.autostart }}</td>
+        <td class="text-center">{{ value.nrVirtCpu }}</td>
+      </tr>
+   {% endfor %}
+ </tbody>
+</table>
+</div>
+
+<hr>
+<br>
+<h3>vms []</h3>
+<pre>{{ vms }}</pre>
+{% endif %}
+
+
+{% endblock %}

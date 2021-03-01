@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<h1>KVM</h1>
+
+<div class='container border'>
+
+        <br>
+
+<!-- +++++++++++++ Another playbook +++++++++++++ -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Playbook: get_kvm_vms</h3>
+          </div>
+          <div class="panel-body">
+            <pre id="playbook">
+- hosts: localhost
+  become: true
+  roles:
+    - kvm
+
+  vars:
+ </pre>
+
+           <form>
+               <button class="btn btn-default btn-lg center-block" name="forwardBtn">Play
+                 <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+               </button>
+           </form>
+
+          </div>
+        </div>
+        <form action="/get_vms" method="post">
+            <button class="btn btn-default btn-lg center-block" name="forwardBtn" type="submit">Get VMs
+              <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            </button>
+</div>
+
+
+
+{% endblock %}

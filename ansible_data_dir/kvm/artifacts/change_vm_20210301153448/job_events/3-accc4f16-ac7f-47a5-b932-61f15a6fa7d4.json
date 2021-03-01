@@ -1,0 +1,1 @@
+{"event": "verbose", "uuid": "accc4f16-ac7f-47a5-b932-61f15a6fa7d4", "counter": 3, "stdout": "\u001b[0;35mbut now controlled from the plugin itself and not using the general constant. \u001b[0m", "start_line": 2, "end_line": 3, "runner_ident": "change_vm_20210301153448"}

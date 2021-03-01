@@ -1,0 +1,26 @@
+---
+# defaults file for apache2
+# @var: apache2_packages: Software a instalar
+apache2_packages:
+  - apache2
+# @var: apache2_create_vhost: Bool para verificar se é para configurar virtual host's
+apache2_create_vhost: False
+# @var: apache2_remove_default_vhost: Bool para verificar se é para remover o virtual host por omissão
+apache2_remove_default_vhost: True
+# @var: apache2_path: Directorio por omissao do apache2
+apache2_path: /etc/apache2
+# @var: apache2_site_available_path: Directorio por omissão dos ficheiros dos virtual host's
+apache2_site_available_path: /etc/apache2/sites-available
+# @var: apache2_default_vhost_name: Nome do virtual host por omissão
+apache2_default_vhost_name: 000-default.conf
+# @var: apache2_default_port: Porta que vai ser utilizada para servir o servidor web
+apache2_default_port: '80'
+# @var: apache2_document_root: Directorio por omissao do conteúdo dos virtual host's
+apache2_document_root: /var/www
+# @var: apache2_vhost: Definição dos virtual hosts a configurar; Pode ser um ou vários
+apache2_vhost:
+  # apache2_vhost:
+  #   - name: unts.xyz
+  #     server_name: www.unts.xyz
+  #     conf_name: unts.xyz.conf
+  #     port: 80
