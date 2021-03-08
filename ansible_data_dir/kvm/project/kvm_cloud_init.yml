@@ -1,0 +1,36 @@
+---
+- hosts: kvm
+  become: False
+  gather_facts: False
+
+  pre_tasks:
+    - name: Ensure that cloud-image-utils is installed
+      apt:
+        name: cloud-image-utils
+        state: present
+      become: True
+    - name: debug extravars
+      debug:
+        var: kvm_new_vm_user_data
+
+  roles:
+    - cloud-init-kvm
+
+  post_tasks:
+    # - name: Wait for port 22
+    #   wait_for:
+    #     port: 22
+    #     host: 192.168.100.101
+    #     delay: 10
+    #   register: test
+
+    # - name: Sending an e-mail using SMTP
+    #   mail:
+    #     host: mail.alcafaz.test
+    #     port: 25
+    #     sender: admin@alcafaz.test
+    #     # username: admin@alcafaz.test
+    #     # password: qwerty
+    #     to: Diogo Fernandes <diogo@alcafaz.test>
+    #     subject: "[Ansible-report] New VM!! {{ kvm_new_vm_user_data.fqdn }}"
+    #     body: VM {{ kvm_new_vm_user_data.fqdn }} has been successfully created.

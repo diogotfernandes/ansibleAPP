@@ -1,0 +1,10 @@
+version: 2
+ethernets:
+  {{ kvm_static_network.interface }}:
+     dhcp4: {{ kvm_static_network.dhcp4 }}
+     # default libvirt network
+     addresses: [ {{ kvm_static_network.ipv4 }} ]
+     gateway4: {{ kvm_static_network.gw }}
+     nameservers:
+       addresses: [ {{ kvm_static_network.ns1 }},{{ kvm_static_network.ns2 }} ]
+       search: [ {{ kvm_static_network.search }} ]

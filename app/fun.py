@@ -1,11 +1,111 @@
 from datetime import datetime
-import ansible_runner, os, json
+import ansible_runner, os, json, yaml
+
+def _play_kvm(playbook, options):
+
+    root_path = "/home/diogo/Documents/ansibleAPP/ansible_data_dir/kvm"
+    project_path = root_path + "/project"
+    now = datetime.today().strftime('%Y%m%d%H%M%S')
+
+    if os.path.isdir(root_path) == False:
+        data = {
+        'status': 'failed',
+        'msg': 'The folder ' + root_path + ' is missing!'
+        }
+        return(data)
+
+    extra_vars = {
+        'kvm_new_vm_qcow2_name': options['userdata_fqdn'] + '.qcow2',
+        'kvm_new_vm_qcow_size': options['qcow2_size'],
+        'kvm_new_vm_user_data': {
+            'hostname': options['userdata_hostname'],
+            'fqdn': options['userdata_fqdn'],
+            'manage_etc_hosts': options['userdata_manage_etc_hosts'],
+            'users' :
+            [{
+                'name': options['userdata_user_name'],
+                'groups': options['userdata_user_group'],
+                'home': '/home/' + options['userdata_hostname'],
+                'shell': '/bin/bash',
+                'ssh-authorized-keys': [options['userdata_user_ssh_key']],
+                'sudo': 'ALL=(ALL) NOPASSWD:ALL'
+            }],
+            'ssh_pwauth': True,
+            'disable_root': options['userdata_disable_root'],
+            'chpasswd': {
+                'list': options['userdata_user_chpasswd'],
+                'expire': options['userdata_expire']
+                },
+        },
+        'kvm_new_vm_meta_data': {
+           'instance-id': options['userdata_hostname'],
+           'local-hostname': options['userdata_hostname'],
+       },
+       'kvm_static_network': {
+           'interface': options['network_interface'],
+           'dhcp4': options['network_dhcp4'],
+           'ipv4': options['network_ipv4'],
+           'gw': options['network_gw'],
+           'ns1': options['network_ns1'],
+           'ns2': options['network_ns2'],
+           'search': options['network_search'],
+       },
+
+    }
+
+    print(yaml.dump(extra_vars))
+
+    # return(yaml.dump(extra_vars))
+
+
+    r = ansible_runner.run(
+        playbook = playbook,
+        # json_mode = True,
+        # quiet = True, # if True no output to console
+        rotate_artifacts = 10, # keep n artifact directories; 0 to disable
+        # fact_cache = 'test',
+        private_data_dir = root_path,
+        # tags = tags,
+        extravars=extra_vars,
+        ident = 'create_vm_' + str(now),
+    )
+
+    for each_host_event in r.events:
+        if(each_host_event['event'] == 'runner_on_ok' ):
+            if (each_host_event['event_data']['task_action'] == 'gather_facts'):
+                facts["ansible_hostname"] = each_host_event['event_data']['res']['ansible_facts']['ansible_hostname']
+                facts["ansible_user_id"] = each_host_event['event_data']['res']['ansible_facts']['ansible_user_id']
+                facts["ansible_user_gecos"] = each_host_event['event_data']['res']['ansible_facts']['ansible_user_gecos']
+            if (each_host_event['event_data']['task'] == 'kvm_final_info'):
+                vms = each_host_event['event_data']['res']['kvm_final_info']
+
+    if(r.status == 'successful'):
+        data = {
+            'status': r.status,
+            'rc': r.rc
+            }
+    else:
+        data = {
+        'status': r.status,
+        'msg': '...'
+        }
+    return (data)
+
+
+
 
 def _change_vm(state):
 
 
     root_path = "/home/diogo/Documents/ansibleAPP/ansible_data_dir/kvm"
     project_path = root_path + "/project"
+    now = datetime.today().strftime('%Y%m%d%H%M%S')
+    #
+    # var: state => get desired state and target vm
+    # state = 'start_ns1.alcafaz.test'; state[0] => tags; state[1] => vm
+    state = state.split('_')
+    tags = state[0]
+    kvm_name = state[1]
 
     if os.path.isdir(root_path) == False:
         try:
@@ -15,15 +115,13 @@ def _change_vm(state):
         else:
             print ("Successfully created the directory %s " % root_path)
 
-    now = datetime.today().strftime('%Y%m%d%H%M%S')
-
-    state = state.split('_')
-    tags = state[0]
-    kvm_name = state[1]
-
+# https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
         playbook = project_path +'/change_state.yml',
-        json_mode = True,
+        # json_mode = True,
+        # quiet = True, # if True no output to console
+        rotate_artifacts = 10, # keep n artifact directories; 0 to disable
+        # fact_cache = 'test',
         private_data_dir = root_path,
         tags = tags,
         extravars={"kvm_name": kvm_name},
@@ -42,8 +140,6 @@ def _change_vm(state):
             if (each_host_event['event_data']['task'] == 'kvm_final_info'):
                 vms = each_host_event['event_data']['res']['kvm_final_info']
 
-
-
     if(r.status == 'successful'):
         data = {
             'status': r.status,
@@ -54,13 +150,6 @@ def _change_vm(state):
         data = {
         'status': r.status
         }
-
-    print("\n\n")
-    print(vms)
-    print(r.status)
-    print("\n")
-    print(state)
-    print("\n\n")
 
     return (data)
 
@@ -82,7 +171,7 @@ def _get_vms():
 
     r = ansible_runner.run(
         playbook = project_path +'/list.yml',
-        json_mode = True,
+        json_mode = False,
         private_data_dir = root_path,
         fact_cache_type = 'jsonfile',
         ident = 'list_vms_' + str(now),
@@ -189,7 +278,7 @@ def _apache2():
 
     r = ansible_runner.run(
         playbook =ansible_path+'/webserver.yml',
-        json_mode = True,
+        json_mode = False,
         private_data_dir = path,
         host_pattern = 'web',
     )
@@ -282,7 +371,7 @@ def _mkdocs():
 
     r = ansible_runner.run(
         playbook =ansible_path+'/sync_mkdocs.yml',
-        json_mode = True,
+        json_mode = False,
         private_data_dir = path,
         host_pattern = 'localhost',
     )

@@ -1,0 +1,9 @@
+---
+# defaults file for cloud-init-kvm
+
+## Posso utilizar outras imagens - p.ex: existe uma imagem diária (http://cloud.debian.org/images/cloud/buster/daily/)
+## Debian 10 generic amd64 - 20210208-542
+kvm_debian_base_img_url: http://cloud.debian.org/images/cloud/buster/20210208-542
+kvm_debian_img_name: debian-10-generic-amd64-20210208-542.qcow2
+## Directoria base das imagens/vms
+kvm_debian_base_img_dst: /mnt/hdd/kvm/debian-cloud-init-imgs

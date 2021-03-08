@@ -1,0 +1,69 @@
+---
+# tasks file for cloud-init-kvm
+
+- name: Check if debian base image already exists
+  stat:
+    path: "{{ kvm_debian_base_img_dst }}/{{ kvm_debian_img_name }}"
+  register: debian_base_image_exists
+
+## Download debian qcow2
+- name: Get debian cloud image
+  get_url:
+    url: "{{ kvm_debian_base_img_url }}/{{ kvm_debian_img_name }}"
+    dest: "{{ kvm_debian_base_img_dst }}"
+  when: debian_base_image_exists.stat.exists == 'false' | bool
+  register: kvm_img
+
+## Verificar se já existe a imagem .qcow2
+- name: Check if the qcow2 already exists
+  stat:
+    path: "{{ kvm_debian_base_img_dst }}/{{ kvm_new_vm_qcow2_name }}"
+  register: qcow2_exists
+
+## Expandir a imagem base, com uma tamanho maior (orignal: ~ 2G)
+- name: Expand debian10 qcow
+  shell: >
+    qemu-img create -b {{ kvm_debian_base_img_dst }}/{{ kvm_debian_img_name }} \
+            -f qcow2 -F qcow2 {{ kvm_debian_base_img_dst }}/{{ kvm_new_vm_qcow2_name }} \
+            {{ kvm_new_vm_qcow_size }}G
+  when: qcow2_exists.stat.exists == 'false' | bool
+
+- debug:
+    var: qcow2_exists.stat
+  when: qcow2_exists.stat.exists == 'false' | bool
+
+
+- name: Template user-data
+  template:
+    src: user-data.j2
+    dest: /tmp/user-data
+    owner: diogo
+    group: diogo
+
+- name: Template meta-data
+  template:
+    src: meta-data.j2
+    dest: /tmp/meta-data
+    owner: diogo
+    group: diogo
+
+- name: Template static network
+  template:
+    src: network.j2
+    dest: /tmp/network_config_static.cfg
+    owner: diogo
+    group: diogo
+
+- name: Create iso with meta-data and user-data
+  command: cloud-localds --network-config=/tmp/network_config_static.cfg /tmp/seed.iso /tmp/user-data /tmp/meta-data
+
+- name: Create new vm
+  shell: >
+    virt-install --connect qemu:///system \
+      --virt-type kvm --name {{ kvm_new_vm_user_data.fqdn }} \
+      --ram 2048 --vcpus=2 --os-type linux --os-variant debian10 \
+      --disk path=/tmp/seed.iso,device=cdrom \
+      --disk path={{ kvm_debian_base_img_dst }}/{{ kvm_new_vm_qcow2_name }},device=disk \
+      --import \
+      --network network=alcafaz.test \
+      --noautoconsole \

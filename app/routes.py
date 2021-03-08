@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, request, url_for, jsonify
 from app import app
+from app.forms import CreateVM
 import re, json, ansible_runner
 
-from app.fun import _mkdocs, _apache2, _get_vms, _change_vm
+from app.fun import _mkdocs, _apache2, _get_vms, _change_vm, _play_kvm
 
 # def test():-
 #     return "hello!"
@@ -12,6 +13,21 @@ from app.fun import _mkdocs, _apache2, _get_vms, _change_vm
 def index():
     return render_template('index.html', title='Home')
 
+@app.route('/create_vm', methods=['GET','POST'])
+def create_vm():
+    form = CreateVM()
+
+    if request.method == 'POST':
+        form_data = form.data
+        playbook = 'kvm_cloud_init.yml'
+
+        data = _play_kvm(playbook, form_data)
+
+        return data
+
+
+    return render_template('kvm/create_vm.html', title='New Virtual Machine', form=form)
+
 
 @app.route('/ansible')
 def ansible():
@@ -19,7 +35,7 @@ def ansible():
 
 @app.route('/kvm')
 def kvm():
-    return render_template('kvm.html')
+    return render_template('kvm/index.html')
 
 @app.route('/change_vm', methods=['GET','POST'])
 def change_vm():
@@ -31,7 +47,7 @@ def change_vm():
     if results['status'] == 'successful' :
          flash('successful', 'success')
          return render_template(
-                  'get_vms.html',
+                  'kvm/get_vms.html',
                   results = results,
                   # events = results['events'],
                   # playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
@@ -43,7 +59,7 @@ def change_vm():
     else:
               flash('something wrong', 'danger')
               return render_template(
-              'get_vms.html'
+              'kvm/get_vms.html'
               )
 
 @app.route("/api/get_vms", methods=['POST', 'GET'])
@@ -62,7 +78,7 @@ def get_vms():
     if results['status'] == 'successful' :
          flash('successful', 'success')
          return render_template(
-                  'get_vms.html',
+                  'kvm/get_vms.html',
                   results = results,
                   # events = results['events'],
                   # playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
@@ -74,7 +90,7 @@ def get_vms():
     else:
               flash('something wrong', 'danger')
               return render_template(
-              'get_vms.html'
+              'kvm/get_vms.html'
               )
 
 @app.route("/mkdocs", methods=['POST'])
