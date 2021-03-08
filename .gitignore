@@ -1,1 +1,3 @@
 venv/
+ansible_data_dir/alcafaz.test/artifacts/
+ansible_data_dir/kvm/artifacts/
