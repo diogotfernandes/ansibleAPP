@@ -9,7 +9,10 @@
 </h1>
 
 
-  {% if playbook_on_start and runner_on_start and runner_on_ok and playbook_on_stats %}
+  {% if playbook_on_start and runner_on_start and runner_on_ok and playbook_on_stats and facts %}
+
+    <h3>facts</h3>
+    <pre>{{ facts }}</pre>
 
     <h3>playbook_on_start</h3>
     <pre>{{ playbook_on_start }}</pre>
@@ -22,9 +25,6 @@
 
     <h3>playbook_on_stats</h3>
     <pre>{{ playbook_on_stats }}</pre>
-
-    <h3>playbook_on_stats</h3>
-    <pre>{{ vms }}</pre>
 
   {% endif %}
 

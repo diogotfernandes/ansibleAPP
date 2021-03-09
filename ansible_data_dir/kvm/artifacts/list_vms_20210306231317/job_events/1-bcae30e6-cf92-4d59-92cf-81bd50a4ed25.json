@@ -1,1 +1,0 @@
-{"event": "verbose", "uuid": "bcae30e6-cf92-4d59-92cf-81bd50a4ed25", "counter": 1, "stdout": "\u001b[0;35m[DEPRECATION WARNING]: ALLOW_WORLD_READABLE_TMPFILES option, moved to a per \u001b[0m", "start_line": 0, "end_line": 1, "runner_ident": "list_vms_20210306231317"}

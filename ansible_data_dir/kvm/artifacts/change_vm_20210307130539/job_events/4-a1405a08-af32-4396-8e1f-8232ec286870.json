@@ -1,1 +1,0 @@
-{"event": "verbose", "uuid": "a1405a08-af32-4396-8e1f-8232ec286870", "counter": 4, "stdout": "\u001b[0;35minstead. This feature will be removed in version 2.14. Deprecation warnings can\u001b[0m", "start_line": 3, "end_line": 4, "runner_ident": "change_vm_20210307130539"}

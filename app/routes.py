@@ -126,11 +126,12 @@ def apache2():
          return render_template(
                   'index.html',
                   results = results,
-                  # events = results['events'],
                   playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
                   runner_on_start=json.dumps(results['runner_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
                   runner_on_ok=json.dumps(results['runner_on_ok'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  playbook_on_stats=json.dumps(results['playbook_on_stats'], sort_keys = False, indent = 4, separators = (',', ': '))
+                  playbook_on_stats=json.dumps(results['playbook_on_stats'], sort_keys = False, indent = 4, separators = (',', ': ')),
+                  facts=json.dumps(results['facts'], sort_keys = False, indent = 4, separators = (',', ': '))
+
               )
     else:
               flash('something wrong', 'danger')
