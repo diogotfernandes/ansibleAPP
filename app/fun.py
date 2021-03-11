@@ -63,16 +63,13 @@ def _play_kvm(playbook, options):
     print(options)
 
     # return(yaml.dump(extra_vars))
-
-
+    # https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
         playbook = playbook,
         json_mode = False,
-        # quiet = True, # if True no output to console
+        quiet = True, # if True no output to console
         rotate_artifacts = 10, # keep n artifact directories; 0 to disable
-        # fact_cache = 'test',
         private_data_dir = root_path,
-        # tags = tags,
         extravars=extra_vars,
         ident = 'create_vm_' + str(now),
     )
@@ -80,7 +77,8 @@ def _play_kvm(playbook, options):
     if(r.status == 'successful'):
         data = {
             'status': r.status,
-            'rc': r.rc
+            'rc': r.rc,
+            'extra_vars': extra_vars
             }
     else:
         data = {
@@ -111,7 +109,7 @@ def _change_vm(state):
         else:
             print ("Successfully created the directory %s " % root_path)
 
-# https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
+    # https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
         playbook = project_path +'/change_state.yml',
         json_mode = False,
@@ -164,7 +162,7 @@ def _get_vms():
             print ("Successfully created the directory %s " % root_path)
 
     now = datetime.today().strftime('%Y%m%d%H%M%S')
-
+    # https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
         playbook = project_path +'/list.yml',
         json_mode = False,
@@ -215,7 +213,7 @@ def _apache2():
         else:
             print ("Successfully created the directory %s " % path)
 
-
+    # https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
         playbook =ansible_path+'/02.simple-apache.yml',
         json_mode = False,

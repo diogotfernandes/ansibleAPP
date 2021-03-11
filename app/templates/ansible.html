@@ -25,7 +25,7 @@
   vars:
     mkdocs_build_config: /home/diogo/Documents/Ansible-Roles-Docs/mkdocs.yml
     mkdocs_build_output_dir: /tmp/site
-    mkdocs_remote_site_path: /var/www/ansible.unts.xyz
+    mkdocs_remote_site_path: /var/www/ansible.diogof.pt
  </pre>
 
            <form action="/mkdocs" method="post">
@@ -45,18 +45,20 @@
           </div>
           <div class="panel-body">
             <pre id="playbook">
-- hosts: web
-  become: true
+- hosts: web01
+  become: True
+  gather_facts: True
   roles:
     - apache2
 
   vars:
     apache2_vhost:
-      - name: diogof.xyz
-        server_name: www.diogof.xyz
-        conf_name: diogof.xyz.conf
+      - name: alcafaz.test
+        server_name: www.alcafaz.test
+        conf_name: alcafaz.test.conf
         port: 80
         apache2_create_vhost: True
+        create_index: True
  </pre>
 
            <form action="/apache2/" method="post">

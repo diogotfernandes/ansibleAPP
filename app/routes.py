@@ -49,11 +49,6 @@ def change_vm():
          return render_template(
                   'kvm/get_vms.html',
                   results = results,
-                  # events = results['events'],
-                  # playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # runner_on_start=json.dumps(results['runner_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # runner_on_ok=json.dumps(results['runner_on_ok'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # playbook_on_stats=json.dumps(results['playbook_on_stats'], sort_keys = False, indent = 4, separators = (',', ': '))
                   vms=json.dumps(results['vms'], sort_keys = False, indent = 4, separators = (',', ': '))
               )
     else:
@@ -80,11 +75,6 @@ def get_vms():
          return render_template(
                   'kvm/get_vms.html',
                   results = results,
-                  # events = results['events'],
-                  # playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # runner_on_start=json.dumps(results['runner_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # runner_on_ok=json.dumps(results['runner_on_ok'], sort_keys = False, indent = 4, separators = (',', ': ')),
-                  # playbook_on_stats=json.dumps(results['playbook_on_stats'], sort_keys = False, indent = 4, separators = (',', ': '))
                   vms=json.dumps(results['vms'], sort_keys = False, indent = 4, separators = (',', ': '))
               )
     else:
@@ -103,7 +93,6 @@ def mkdocs():
          return render_template(
                   'index.html',
                   results = results,
-                  # events = results['events'],
                   playbook_on_start=json.dumps(results['playbook_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
                   runner_on_start=json.dumps(results['runner_on_start'], sort_keys = False, indent = 4, separators = (',', ': ')),
                   runner_on_ok=json.dumps(results['runner_on_ok'], sort_keys = False, indent = 4, separators = (',', ': ')),
@@ -114,7 +103,6 @@ def mkdocs():
               return render_template(
               'index.html'
               )
-    # print(results)
 
 @app.route("/apache2/", methods=['POST'])
 def apache2():
