@@ -201,7 +201,7 @@ def _get_vms():
 
 def _apache2():
 
-    ansible_path = "/etc/ansible"
+    ansible_path = "/etc/ansible/inventories/alcafaz.test/"
     path = "/tmp/demo"
     now = datetime.today().strftime('%Y%m%d%H%M%S')
 
@@ -215,7 +215,7 @@ def _apache2():
 
     # https://ansible-runner.readthedocs.io/en/stable/source/ansible_runner.html#module-ansible_runner.interface
     r = ansible_runner.run(
-        playbook =ansible_path+'/02.simple-apache.yml',
+        playbook =ansible_path+'/12.simple-apache.yml',
         json_mode = False,
         private_data_dir = path,
         rotate_artifacts = 2, # keep n artifact directories; 0 to disable
@@ -302,7 +302,7 @@ def _apache2():
 
 def _mkdocs():
 
-    ansible_path = "/etc/ansible"
+    ansible_path = "/etc/ansible/inventories/alcafaz.test"
     path = "/tmp/demo"
     now = datetime.today().strftime('%Y%m%d%H%M%S')
 
@@ -316,7 +316,7 @@ def _mkdocs():
 
 
     r = ansible_runner.run(
-        playbook =ansible_path+'/05.push-mkdocs-to-remote.yml',
+        playbook =ansible_path+'/11.push-mkdocs-to-remote.yml',
         json_mode = False,
         private_data_dir = path,
         host_pattern = 'localhost',
